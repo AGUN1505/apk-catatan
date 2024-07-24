@@ -56,54 +56,59 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.note == null ? 'Tambah Catatan' : 'Edit Catatan'),
-        actions: [
-          if (widget.note != null)
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: _deleteNote,
-            ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: _title,
-                decoration: InputDecoration(labelText: 'Judul'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Judul tidak boleh kosong';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _title = value,
+        appBar: AppBar(
+          title: Text(widget.note == null ? 'Tambah Catatan' : 'Edit Catatan'),
+          actions: [
+            if (widget.note != null)
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: _deleteNote,
               ),
-              TextFormField(
-                initialValue: _content,
-                decoration: InputDecoration(labelText: 'Isi'),
-                maxLines: null,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Isi tidak boleh kosong';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _content = value,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveNote,
-                child: Text('Simpan'),
-              ),
-            ],
-          ),
+            ElevatedButton(
+              onPressed: _saveNote,
+              child: Text('Simpan'),
+            )
+          ],
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      initialValue: _title,
+                      decoration: InputDecoration(labelText: 'Judul'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Judul tidak boleh kosong';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _title = value,
+                    ),
+                    TextFormField(
+                      initialValue: _content,
+                      decoration: InputDecoration(labelText: 'Isi'),
+                      maxLines: null,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Isi tidak boleh kosong';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => _content = value,
+                    ),
+                    // SizedBox(height: 20),
+
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        ));
   }
 }
