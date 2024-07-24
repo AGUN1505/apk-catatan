@@ -45,11 +45,11 @@ class DatabaseHelper {
   final String columnTgl = 'tanggal';
 
   // Variabel untuk tabel catatan
-  final String notesTableName = 'tbl_catatan';
-  final String notesColumnId = 'id';
-  final String notesColumnTitle = 'title';
-  final String notesColumnContent = 'content';
-  final String notesColumnDate = 'date';
+  // final String notesTableName = 'tbl_catatan';
+  // final String notesColumnId = 'id';
+  // final String notesColumnTitle = 'title';
+  // final String notesColumnContent = 'content';
+  // final String notesColumnDate = 'date';
 
   DatabaseHelper._internal();
 
@@ -80,15 +80,17 @@ class DatabaseHelper {
       $columnJmlUang TEXT,
       $columnTgl TEXT
     );
-    CREATE TABLE $notesTableName(
-      $notesColumnId INTEGER PRIMARY KEY,
-      $notesColumnTitle TEXT,
-      $notesColumnContent TEXT,
-      $notesColumnDate TEXT
-    );
+
     ''';
     await db.execute(sql);
   }
+
+  //   CREATE TABLE $notesTableName(
+  //   $notesColumnId INTEGER PRIMARY KEY,
+  //   $notesColumnTitle TEXT,
+  //   $notesColumnContent TEXT,
+  //   $notesColumnDate TEXT
+  // );
 
   // Metode untuk tabel keuangan
   Future<int?> saveData(ModelDatabase modelDatabase) async {
@@ -171,31 +173,31 @@ class DatabaseHelper {
   }
 
   // Metode untuk tabel catatan
-  Future<int?> saveNote(ModelDatabase modelCatatan) async {
-    var dbClient = await checkDB;
-    return await dbClient!.insert(notesTableName, modelCatatan.toMap());
-  }
+  // Future<int?> saveNote(ModelCatatan modelCatatan) async {
+  //   var dbClient = await checkDB;
+  //   return await dbClient!.insert(notesTableName, modelCatatan.toMap());
+  // }
 
-  // Future<List?> getAllNotes() async {
+  // Future<List> getAllNotes() async {
   //   var dbClient = await checkDB;
   //   var result = await dbClient!.query(notesTableName);
   //   return result.toList();
   // }
 
-  Future<List<Map<String, dynamic>>> getAllNotes() async {
-    var dbClient = await checkDB;
-    return await dbClient!.query('tbl_catatan');
-  }
+  // Future<List<Map<String, dynamic>>> getAllNotes() async {
+  //   var dbClient = await checkDB;
+  //   return await dbClient!.query('tbl_catatan');
+  // }
 
-  Future<int?> updateNote(ModelDatabase modelCatatan) async {
-    var dbClient = await checkDB;
-    return await dbClient!.update(notesTableName, modelCatatan.toMap(),
-        where: '$notesColumnId = ?', whereArgs: [modelCatatan.id]);
-  }
+  // Future<int?> updateNote(ModelCatatan modelCatatan) async {
+  //   var dbClient = await checkDB;
+  //   return await dbClient!.update(notesTableName, modelCatatan.toMap(),
+  //       where: '$notesColumnId = ?', whereArgs: [modelCatatan.id]);
+  // }
 
-  Future<int?> deleteNote(int id) async {
-    var dbClient = await checkDB;
-    return await dbClient!
-        .delete(notesTableName, where: '$notesColumnId = ?', whereArgs: [id]);
-  }
+  // Future<int?> deleteNote(int id) async {
+  //   var dbClient = await checkDB;
+  //   return await dbClient!
+  //       .delete(notesTableName, where: '$notesColumnId = ?', whereArgs: [id]);
+  // }
 }
