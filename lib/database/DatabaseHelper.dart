@@ -3,33 +3,33 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 // Model Catatan
-class ModelCatatan {
-  int? id;
-  String? title;
-  String? content;
-  String? date;
+// class ModelCatatan {
+//   int? id;
+//   String? title;
+//   String? content;
+//   String? date;
 
-  ModelCatatan({this.id, this.title, this.content, this.date});
+//   ModelCatatan({this.id, this.title, this.content, this.date});
 
-  Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
-    if (id != null) {
-      map['id'] = id;
-    }
-    map['title'] = title;
-    map['content'] = content;
-    map['date'] = date;
+//   Map<String, dynamic> toMap() {
+//     var map = Map<String, dynamic>();
+//     if (id != null) {
+//       map['id'] = id;
+//     }
+//     map['title'] = title;
+//     map['content'] = content;
+//     map['date'] = date;
 
-    return map;
-  }
+//     return map;
+//   }
 
-  ModelCatatan.fromMap(Map<String, dynamic> map) {
-    this.id = map['id'];
-    this.title = map['title'];
-    this.content = map['content'];
-    this.date = map['date'];
-  }
-}
+//   ModelCatatan.fromMap(Map<String, dynamic> map) {
+//     this.id = map['id'];
+//     this.title = map['title'];
+//     this.content = map['content'];
+//     this.date = map['date'];
+//   }
+// }
 
 // DatabaseHelper
 class DatabaseHelper {
@@ -171,18 +171,23 @@ class DatabaseHelper {
   }
 
   // Metode untuk tabel catatan
-  Future<int?> saveNote(ModelCatatan modelCatatan) async {
+  Future<int?> saveNote(ModelDatabase modelCatatan) async {
     var dbClient = await checkDB;
     return await dbClient!.insert(notesTableName, modelCatatan.toMap());
   }
 
-  Future<List?> getAllNotes() async {
+  // Future<List?> getAllNotes() async {
+  //   var dbClient = await checkDB;
+  //   var result = await dbClient!.query(notesTableName);
+  //   return result.toList();
+  // }
+
+  Future<List<Map<String, dynamic>>> getAllNotes() async {
     var dbClient = await checkDB;
-    var result = await dbClient!.query(notesTableName);
-    return result.toList();
+    return await dbClient!.query('tbl_catatan');
   }
 
-  Future<int?> updateNote(ModelCatatan modelCatatan) async {
+  Future<int?> updateNote(ModelDatabase modelCatatan) async {
     var dbClient = await checkDB;
     return await dbClient!.update(notesTableName, modelCatatan.toMap(),
         where: '$notesColumnId = ?', whereArgs: [modelCatatan.id]);
