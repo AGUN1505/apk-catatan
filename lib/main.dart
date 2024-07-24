@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:catatanku/catatan/page_catatan.dart';
+import 'package:catatanku/pemasukan/page_pemasukan.dart';
+import 'package:catatanku/pengeluaran/page_pengeluaran.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,9 +56,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         body: TabBarView(
           controller: tabController,
           children: [
-            // pageCatatan(),
-            // PagePemasukan(),
-            // PagePengeluaran(),
+            PageCatatan(),
+            PagePemasukan(),
+            PagePengeluaran(),
           ],
         ),
       ),
