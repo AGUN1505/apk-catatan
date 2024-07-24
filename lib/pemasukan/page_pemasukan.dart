@@ -69,30 +69,30 @@ class _PagePemasukanState extends State<PagePemasukan> {
     });
   }
 
-  // //untuk insert data baru
-  // Future<void> openFormCreate() async {
-  //   var result = await Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => PageInputPemasukan()));
-  //   if (result == 'save') {
-  //     await getAllData();
-  //     await getJmlUang();
-  //     await getDatabase();
-  //   }
-  // }
+  //untuk insert data baru
+  Future<void> openFormCreate() async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PageInputPemasukan()));
+    if (result == 'save') {
+      await getAllData();
+      await getJmlUang();
+      await getDatabase();
+    }
+  }
 
-  //untuk edit data
-  // Future<void> openFormEdit(ModelDatabase modelDatabase) async {
-  //   var result = await Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) =>
-  //               PageInputPemasukan(modelDatabase: modelDatabase)));
-  //   if (result == 'update') {
-  //     await getAllData();
-  //     await getJmlUang();
-  //     await getDatabase();
-  //   }
-  // }
+  // untuk edit data
+  Future<void> openFormEdit(ModelDatabase modelDatabase) async {
+    var result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                PageInputPemasukan(modelDatabase: modelDatabase)));
+    if (result == 'update') {
+      await getAllData();
+      await getJmlUang();
+      await getDatabase();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,14 +110,14 @@ class _PagePemasukanState extends State<PagePemasukan> {
               child: ListTile(
                 title: Text('Total Pemasukan Bulan Ini',
                     style: const TextStyle(fontSize: 14, color: Colors.black)),
-                // subtitle: Padding(
-                //   padding: const EdgeInsets.only(top: 8),
-                //   child: Text(CurrencyFormat.convertToIdr(strJmlUang),
-                //       style: const TextStyle(
-                //           fontSize: 18,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.black)),
-                // ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(CurrencyFormat.convertToIdr(strJmlUang),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                ),
               ),
             ),
             strCheckDatabase == 0
@@ -156,12 +156,12 @@ class _PagePemasukanState extends State<PagePemasukan> {
                                 padding: const EdgeInsets.only(
                                   top: 8,
                                 ),
-                                // child: Text(
-                                //     'Jumlah Uang: ' +
-                                //         CurrencyFormat.convertToIdr(int.parse(
-                                //             modeldatabase.jml_uang.toString())),
-                                //     style: const TextStyle(
-                                //         fontSize: 12, color: Colors.black)),
+                                child: Text(
+                                    'Jumlah Uang: ' +
+                                        CurrencyFormat.convertToIdr(int.parse(
+                                            modeldatabase.jml_uang.toString())),
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.black)),
                               ),
                               Padding(
                                 padding:
@@ -178,7 +178,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      // openFormEdit(modeldatabase);
+                                      openFormEdit(modeldatabase);
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -244,7 +244,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // openFormCreate();
+          openFormCreate();
         },
         icon: Icon(Icons.add, color: Colors.white),
         label: Text(
