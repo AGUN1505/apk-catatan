@@ -72,9 +72,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         unselectedLabelColor: Colors.black26,
         indicatorColor: Colors.white,
         tabs: [
-          Tab(
-              text: 'Catatan',
-              icon: const Icon(Icons.book, color: Colors.white)),
+          Tab(text: 'Catatan', icon: const Icon(Icons.book)),
           Tab(
             text: 'Pemasukan',
             icon: Icon(Icons.archive_outlined),
