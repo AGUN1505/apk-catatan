@@ -2,9 +2,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:catatanku/model/model_database.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  static Database? _database;
+class DatabaseHelper2 {
+  static final DatabaseHelper2 _instance = DatabaseHelper2._internal2();
+  static Database? _database2;
 
   final String notesTableName = 'tbl_catatan';
   final String columnId = 'id';
@@ -12,22 +12,22 @@ class DatabaseHelper {
   final String columnContent = 'content';
   final String columnDate = 'date';
 
-  DatabaseHelper._internal();
+  DatabaseHelper2._internal2();
 
-  factory DatabaseHelper() => _instance;
+  factory DatabaseHelper2() => _instance;
 
   Future<Database?> get checkDB async {
-    if (_database != null) {
-      return _database;
+    if (_database2 != null) {
+      return _database2;
     }
-    _database = await _initDB();
-    return _database;
+    _database2 = await _initDB2();
+    return _database2;
   }
 
-  Future<Database?> _initDB() async {
-    String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'catatan.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+  Future<Database?> _initDB2() async {
+    String databasePath2 = await getDatabasesPath();
+    String path2 = join(databasePath2, 'catatan.db');
+    return await openDatabase(path2, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {

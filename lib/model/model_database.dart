@@ -32,9 +32,6 @@ class ModelDatabase {
   String? keterangan;
   String? jml_uang;
   String? tanggal;
-  // String? title;
-  // String? date;
-  // String? content;
 
   ModelDatabase({
     this.id,
@@ -42,36 +39,25 @@ class ModelDatabase {
     this.keterangan,
     this.jml_uang,
     this.tanggal,
-    // this.title,
-    // this.content,
-    // this.date
   });
 
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
-    if (id != null) {
-      map['id'] = id;
-    }
-    map['tipe'] = tipe;
-    map['keterangan'] = keterangan;
-    map['jml_uang'] = jml_uang;
-    map['tanggal'] = tanggal;
-    // map['title'] = title;
-    // map['content'] = content;
-    // map['date'] = date;
-
-    return map;
+    return {
+      'id': id,
+      'tipe': tipe,
+      'keterangan': keterangan,
+      'jml_uang': jml_uang,
+      'tanggal': tanggal,
+    };
   }
 
-  ModelDatabase.fromMap(Map<String, dynamic> map) {
-    this.id = map['id'];
-    this.tipe = map['tipe'];
-    this.keterangan = map['keterangan'];
-    this.jml_uang = map['jml_uang'];
-    this.tanggal = map['tanggal'];
-    //   this.title = map['title'];
-    //   this.content = map['content'];
-    //   this.date = map['date'];
-    // }
+  factory ModelDatabase.fromMap(Map<String, dynamic> map) {
+    return ModelDatabase(
+      id: map['id'],
+      tipe: map['tipe'],
+      keterangan: map['keterangan'],
+      jml_uang: map['jml_uang'],
+      tanggal: map['tanggal'],
+    );
   }
 }

@@ -37,9 +37,9 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
       );
 
       if (widget.note == null) {
-        await DatabaseHelper().saveNote(newNote);
+        await DatabaseHelper2().saveNote(newNote);
       } else {
-        await DatabaseHelper().updateNote(newNote);
+        await DatabaseHelper2().updateNote(newNote);
       }
 
       Navigator.pop(context);
@@ -48,7 +48,7 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
 
   Future<void> _deleteNote() async {
     if (widget.note != null) {
-      await DatabaseHelper().deleteNote(widget.note!.id!);
+      await DatabaseHelper2().deleteNote(widget.note!.id!);
       Navigator.pop(context);
     }
   }

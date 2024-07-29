@@ -19,7 +19,7 @@ class _PageCatatanState extends State<PageCatatan> {
   }
 
   Future<void> _loadNotes() async {
-    final notes = await DatabaseHelper().getAllNotes();
+    final notes = await DatabaseHelper2().getAllNotes();
     setState(() {
       _notes = notes.map((note) => ModelCatatan.fromMap(note)).toList();
     });

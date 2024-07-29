@@ -3,16 +3,16 @@ import 'package:catatanku/database/DatabaseHelper.dart';
 import 'package:catatanku/model/model_database.dart';
 import 'package:intl/intl.dart';
 
-class PageInputPemasukan extends StatefulWidget {
+class PageInputPengeluaran extends StatefulWidget {
   final ModelDatabase? modelDatabase;
 
-  PageInputPemasukan({this.modelDatabase});
+  PageInputPengeluaran({this.modelDatabase});
 
   @override
-  _PageInputPemasukanState createState() => _PageInputPemasukanState();
+  _PageInputPengeluaranState createState() => _PageInputPengeluaranState();
 }
 
-class _PageInputPemasukanState extends State<PageInputPemasukan> {
+class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   TextEditingController? keterangan;
@@ -21,11 +21,16 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
 
   @override
   void initState() {
-    keterangan =
-        TextEditingController(text: widget.modelDatabase?.keterangan ?? '');
-    tanggal = TextEditingController(text: widget.modelDatabase?.tanggal ?? '');
-    jml_uang =
-        TextEditingController(text: widget.modelDatabase?.jml_uang ?? '');
+    keterangan = TextEditingController(
+        text: widget.modelDatabase == null
+            ? ''
+            : widget.modelDatabase!.keterangan);
+    tanggal = TextEditingController(
+        text:
+            widget.modelDatabase == null ? '' : widget.modelDatabase!.tanggal);
+    jml_uang = TextEditingController(
+        text:
+            widget.modelDatabase == null ? '' : widget.modelDatabase!.jml_uang);
     super.initState();
   }
 
@@ -39,7 +44,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
           color: Colors.white,
         ),
         backgroundColor: Colors.blue,
-        title: Text('Form Data Pemasukan',
+        title: Text('Form Data Pengeluaran',
             style: const TextStyle(fontSize: 14, color: Colors.white)),
       ),
       body: ListView(
@@ -172,9 +177,9 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
   Future<void> upsertData() async {
     if (widget.modelDatabase != null) {
       //update
-      await databaseHelper.updateDataPemasukan(ModelDatabase.fromMap({
+      await databaseHelper.updateDataPengeluaran(ModelDatabase.fromMap({
         'id': widget.modelDatabase!.id,
-        'tipe': 'pemasukan',
+        'tipe': 'pengeluaran',
         'keterangan': keterangan!.text,
         'jml_uang': jml_uang!.text,
         'tanggal': tanggal!.text
@@ -183,7 +188,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
     } else {
       //insert
       await databaseHelper.saveData(ModelDatabase(
-        tipe: 'pemasukan',
+        tipe: 'pengeluaran',
         keterangan: keterangan!.text,
         jml_uang: jml_uang!.text,
         tanggal: tanggal!.text,

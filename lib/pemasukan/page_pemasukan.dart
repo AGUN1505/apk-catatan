@@ -82,7 +82,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     }
   }
 
-  // untuk edit data
+  //untuk edit data
   Future<void> openFormEdit(ModelDatabase modelDatabase) async {
     var result = await Navigator.push(
         context,
