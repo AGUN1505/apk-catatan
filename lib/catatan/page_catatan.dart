@@ -1,8 +1,10 @@
+// Import paket-paket yang diperlukan
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:CatatanKu/database/DatabaseHelper2.dart';
 import 'package:CatatanKu/catatan/detailcatatan.dart';
 import 'package:flutter/material.dart';
 
+// Widget StatefulWidget untuk halaman catatan
 class PageCatatan extends StatefulWidget {
   const PageCatatan({super.key});
 
@@ -10,17 +12,23 @@ class PageCatatan extends StatefulWidget {
   State<PageCatatan> createState() => _PageCatatanState();
 }
 
+// State untuk PageCatatan
 class _PageCatatanState extends State<PageCatatan> {
+  // List untuk menyimpan catatan-catatan
   List<ModelCatatan> _notes = [];
+
   @override
   void initState() {
     super.initState();
+    // Memuat catatan saat widget diinisialisasi
     _loadNotes();
   }
 
+  // Fungsi untuk memuat catatan dari database
   Future<void> _loadNotes() async {
     final notes = await DatabaseHelper2().getAllNotes();
     setState(() {
+      // Mengubah hasil query menjadi list ModelCatatan
       _notes = notes.map((note) => ModelCatatan.fromMap(note)).toList();
     });
   }
@@ -29,6 +37,7 @@ class _PageCatatanState extends State<PageCatatan> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _notes.isEmpty
+          // Tampilan jika tidak ada catatan
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -43,6 +52,7 @@ class _PageCatatanState extends State<PageCatatan> {
                 ],
               ),
             )
+          // Tampilan list catatan jika ada catatan
           : ListView.builder(
               itemCount: _notes.length,
               itemBuilder: (context, index) {
@@ -59,28 +69,35 @@ class _PageCatatanState extends State<PageCatatan> {
                       style: TextStyle(fontSize: 12),
                     ),
                     trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    // Navigasi ke halaman detail catatan saat item ditekan
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailCatatanPage(note: note),
                         ),
-                      ).then((_) => _loadNotes());
+                      ).then((_) =>
+                          _loadNotes()); // Memuat ulang catatan setelah kembali
                     },
                   ),
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
+      // Tombol floating untuk menambah catatan baru
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          // Navigasi ke halaman detail catatan untuk membuat catatan baru
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => DetailCatatanPage(),
             ),
-          ).then((_) => _loadNotes());
+          ).then((_) => _loadNotes()); // Memuat ulang catatan setelah kembali
         },
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
+        label: Text('Tambah Catatan'),
+        backgroundColor: Colors.yellow[300],
+        foregroundColor: Colors.black87,
       ),
     );
   }

@@ -1,26 +1,33 @@
+// Import paket-paket yang diperlukan
 import 'package:flutter/material.dart';
 import 'package:CatatanKu/database/DatabaseHelper.dart';
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:intl/intl.dart';
 
+// Widget StatefulWidget untuk halaman input pengeluaran
 class PageInputPengeluaran extends StatefulWidget {
   final ModelDatabase? modelDatabase;
 
+  // Constructor dengan parameter opsional modelDatabase
   PageInputPengeluaran({this.modelDatabase});
 
   @override
   _PageInputPengeluaranState createState() => _PageInputPengeluaranState();
 }
 
+// State untuk PageInputPengeluaran
 class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
+  // Inisialisasi DatabaseHelper untuk operasi database
   DatabaseHelper databaseHelper = DatabaseHelper();
 
+  // Controller untuk input teks
   TextEditingController? keterangan;
   TextEditingController? tanggal;
   TextEditingController? jml_uang;
 
   @override
   void initState() {
+    // Inisialisasi controller dengan nilai dari modelDatabase jika ada
     keterangan = TextEditingController(
         text: widget.modelDatabase == null
             ? ''
@@ -36,136 +43,109 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
+      // AppBar dengan judul dan warna latar
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Colors.black87,
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.yellow[300],
         title: Text('Form Data Pengeluaran',
-            style: const TextStyle(fontSize: 14, color: Colors.white)),
+            style: TextStyle(fontSize: 16, color: Colors.black87)),
       ),
+      // Body berisi ListView dengan form input
       body: ListView(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(16),
         children: [
+          // TextField untuk input keterangan
           TextField(
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
             controller: keterangan,
             decoration: InputDecoration(
-                labelText: 'Keterangan',
-                labelStyle: const TextStyle(fontSize: 14, color: Colors.black),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-            ),
-            child: TextField(
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.datetime,
-              readOnly: true,
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    builder: (BuildContext context, Widget? child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          colorScheme: const ColorScheme.light(
-                              onPrimary: Colors.white,
-                              onBackground: Colors.white),
-                          datePickerTheme: const DatePickerThemeData(
-                            headerBackgroundColor: Colors.blue,
-                            backgroundColor: Colors.white,
-                            headerForegroundColor: Colors.white,
-                            surfaceTintColor: Colors.white,
-                          ),
-                        ),
-                        child: child!,
-                      );
-                    },
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(9999));
-                if (pickedDate != null) {
-                  tanggal!.text = DateFormat('dd MMM yyyy').format(pickedDate);
-                }
-              },
-              controller: tanggal,
-              decoration: InputDecoration(
-                  labelText: 'Tanggal',
-                  labelStyle:
-                      const TextStyle(fontSize: 14, color: Colors.black),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  )),
+              labelText: 'Keterangan',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              filled: true,
+              fillColor: Colors.yellow[50],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-            ),
-            child: TextField(
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.number,
-              controller: jml_uang,
-              decoration: InputDecoration(
-                  labelText: 'Jumlah Uang',
-                  labelStyle:
-                      const TextStyle(fontSize: 14, color: Colors.black),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  )),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(40),
-            child: Material(
-              elevation: 3,
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                width: size.width,
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue),
-                child: Material(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      if (keterangan!.text.toString() == '' ||
-                          tanggal!.text.toString() == '' ||
-                          jml_uang!.text.toString() == '') {
-                        const snackBar = SnackBar(
-                            content:
-                                Text("Ups, form tidak boleh ada yang kosong!"));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } else {
-                        upsertData();
-                      }
-                    },
-                    child: Center(
-                      child: (widget.modelDatabase == null)
-                          ? Text(
-                              'Tambah Data',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.white),
-                            )
-                          : Text(
-                              'Update Data',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.white),
-                            ),
+          SizedBox(height: 16),
+          // TextField untuk input tanggal dengan DatePicker
+          TextField(
+            controller: tanggal,
+            readOnly: true,
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime(9999),
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme:
+                          ColorScheme.light(primary: Colors.yellow[300]!),
+                      buttonTheme:
+                          ButtonThemeData(textTheme: ButtonTextTheme.primary),
                     ),
-                  ),
-                ),
+                    child: child!,
+                  );
+                },
+              );
+              if (pickedDate != null) {
+                tanggal!.text = DateFormat('dd MMM yyyy').format(pickedDate);
+              }
+            },
+            decoration: InputDecoration(
+              labelText: 'Tanggal',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              filled: true,
+              fillColor: Colors.yellow[50],
+              suffixIcon: Icon(Icons.calendar_today),
+            ),
+          ),
+          SizedBox(height: 16),
+          // TextField untuk input jumlah uang
+          TextField(
+            controller: jml_uang,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'Jumlah Uang',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              filled: true,
+              fillColor: Colors.yellow[50],
+              prefixText: 'Rp ',
+            ),
+          ),
+          SizedBox(height: 24),
+          // Tombol untuk menyimpan atau mengupdate data
+          ElevatedButton(
+            onPressed: () {
+              // Validasi input sebelum menyimpan
+              if (keterangan!.text.isEmpty ||
+                  tanggal!.text.isEmpty ||
+                  jml_uang!.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Semua field harus diisi!")),
+                );
+              } else {
+                upsertData();
+              }
+            },
+            child: Text(
+              widget.modelDatabase == null ? 'Tambah Data' : 'Update Data',
+              style: TextStyle(color: Colors.black87),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.yellow[300],
+              foregroundColor: Colors.black87,
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
@@ -174,9 +154,10 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
     );
   }
 
+  // Fungsi untuk menyimpan atau mengupdate data
   Future<void> upsertData() async {
     if (widget.modelDatabase != null) {
-      //update
+      // Update data jika modelDatabase tidak null
       await databaseHelper.updateDataPengeluaran(ModelDatabase.fromMap({
         'id': widget.modelDatabase!.id,
         'tipe': 'pengeluaran',
@@ -186,7 +167,7 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
       }));
       Navigator.pop(context, 'update');
     } else {
-      //insert
+      // Insert data baru jika modelDatabase null
       await databaseHelper.saveData(ModelDatabase(
         tipe: 'pengeluaran',
         keterangan: keterangan!.text,

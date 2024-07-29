@@ -1,9 +1,11 @@
+// Import paket-paket yang diperlukan
 import 'package:flutter/material.dart';
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:CatatanKu/database/DatabaseHelper2.dart';
 
+// Widget StatefulWidget untuk halaman detail catatan
 class DetailCatatanPage extends StatefulWidget {
-  final ModelCatatan? note;
+  final ModelCatatan? note; // Catatan yang akan ditampilkan/diedit (opsional)
 
   const DetailCatatanPage({super.key, this.note});
 
@@ -11,24 +13,28 @@ class DetailCatatanPage extends StatefulWidget {
   _DetailCatatanPageState createState() => _DetailCatatanPageState();
 }
 
+// State untuk DetailCatatanPage
 class _DetailCatatanPageState extends State<DetailCatatanPage> {
-  final _formKey = GlobalKey<FormState>();
-  String? _title;
-  String? _content;
+  final _formKey = GlobalKey<FormState>(); // Key untuk form
+  String? _title; // Judul catatan
+  String? _content; // Isi catatan
 
   @override
   void initState() {
     super.initState();
+    // Inisialisasi judul dan isi jika catatan sudah ada
     if (widget.note != null) {
       _title = widget.note!.title;
       _content = widget.note!.content;
     }
   }
 
+  // Fungsi untuk menyimpan catatan
   Future<void> _saveNote() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      // Membuat objek catatan baru
       final newNote = ModelCatatan(
         id: widget.note?.id,
         title: _title,
@@ -36,20 +42,22 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
         date: DateTime.now().toIso8601String(),
       );
 
+      // Menyimpan catatan baru atau memperbarui catatan yang ada
       if (widget.note == null) {
         await DatabaseHelper2().saveNote(newNote);
       } else {
         await DatabaseHelper2().updateNote(newNote);
       }
 
-      Navigator.pop(context);
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
     }
   }
 
+  // Fungsi untuk menghapus catatan
   Future<void> _deleteNote() async {
     if (widget.note != null) {
       await DatabaseHelper2().deleteNote(widget.note!.id!);
-      Navigator.pop(context);
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
     }
   }
 
@@ -59,15 +67,16 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
         appBar: AppBar(
           title: Text(widget.note == null ? 'Tambah Catatan' : 'Edit Catatan'),
           actions: [
+            // Tombol hapus hanya ditampilkan jika mengedit catatan yang sudah ada
             if (widget.note != null)
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: _deleteNote,
               ),
+            // Tombol simpan
             IconButton(
               icon: Icon(Icons.save),
               onPressed: _saveNote,
-              // child: Text('Simpan'),
             )
           ],
         ),
@@ -79,6 +88,7 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    // Input field untuk judul catatan
                     TextFormField(
                       initialValue: _title,
                       decoration: InputDecoration(labelText: 'Judul'),
@@ -90,6 +100,7 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                       },
                       onSaved: (value) => _title = value,
                     ),
+                    // Input field untuk isi catatan
                     TextFormField(
                       initialValue: _content,
                       decoration: InputDecoration(labelText: 'Isi'),
@@ -102,9 +113,6 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                       },
                       onSaved: (value) => _content = value,
                     ),
-                    // SizedBox(height: 20),
-
-                    // ),
                   ],
                 ),
               ),

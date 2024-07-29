@@ -1,9 +1,11 @@
+// Import paket-paket yang diperlukan
 import 'package:flutter/material.dart';
 import 'package:CatatanKu/database/DatabaseHelper.dart';
 import 'package:CatatanKu/decoration/format_rupiah.dart';
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:CatatanKu/pemasukan/page_input_pemasukan.dart';
 
+// Widget StatefulWidget untuk halaman pemasukan
 class PagePemasukan extends StatefulWidget {
   const PagePemasukan({Key? key}) : super(key: key);
 
@@ -11,21 +13,27 @@ class PagePemasukan extends StatefulWidget {
   State<PagePemasukan> createState() => _PagePemasukanState();
 }
 
+// State untuk PagePemasukan
 class _PagePemasukanState extends State<PagePemasukan> {
+  // List untuk menyimpan data pemasukan
   List<ModelDatabase> listPemasukan = [];
+  // Objek DatabaseHelper untuk operasi database
   DatabaseHelper databaseHelper = DatabaseHelper();
+  // Variabel untuk menyimpan jumlah total pemasukan
   int strJmlUang = 0;
+  // Variabel untuk mengecek apakah database kosong atau tidak
   int strCheckDatabase = 0;
 
   @override
   void initState() {
     super.initState();
+    // Memanggil fungsi-fungsi untuk inisialisasi data
     getDatabase();
     getJmlUang();
     getAllData();
   }
 
-  //cek database ada data atau tidak
+  // Fungsi untuk mengecek apakah database memiliki data atau tidak
   Future<void> getDatabase() async {
     var checkDB = await databaseHelper.cekDataPemasukan();
     setState(() {
@@ -38,7 +46,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     });
   }
 
-  //cek jumlah total uang
+  // Fungsi untuk mendapatkan jumlah total pemasukan
   Future<void> getJmlUang() async {
     var checkJmlUang = await databaseHelper.getJmlPemasukan();
     setState(() {
@@ -50,7 +58,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     });
   }
 
-  //get data untuk menampilkan ke listview
+  // Fungsi untuk mendapatkan semua data pemasukan dan menampilkannya di ListView
   Future<void> getAllData() async {
     var listData = await databaseHelper.getDataPemasukan();
     setState(() {
@@ -61,7 +69,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     });
   }
 
-  //untuk hapus data berdasarkan Id
+  // Fungsi untuk menghapus data berdasarkan Id
   Future<void> deleteData(ModelDatabase modelDatabase, int position) async {
     await databaseHelper.deletePemasukan(modelDatabase.id!);
     setState(() {
@@ -71,7 +79,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     });
   }
 
-  //untuk insert data baru
+  // Fungsi untuk membuka form input data baru
   Future<void> openFormCreate() async {
     var result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => PageInputPemasukan()));
@@ -82,7 +90,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     }
   }
 
-  //untuk edit data
+  // Fungsi untuk membuka form edit data
   Future<void> openFormEdit(ModelDatabase modelDatabase) async {
     var result = await Navigator.push(
         context,
@@ -102,6 +110,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Widget Card untuk menampilkan total pemasukan
             Card(
               margin: const EdgeInsets.all(16),
               child: Padding(
@@ -122,6 +131,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
                 ),
               ),
             ),
+            // Kondisi untuk menampilkan pesan jika tidak ada data atau ListView jika ada data
             strCheckDatabase == 0
                 ? Center(
                     child: Column(
@@ -188,6 +198,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
           ],
         ),
       ),
+      // Tombol floating untuk menambah data pemasukan baru
       floatingActionButton: FloatingActionButton.extended(
         onPressed: openFormCreate,
         icon: Icon(Icons.add),
@@ -196,6 +207,7 @@ class _PagePemasukanState extends State<PagePemasukan> {
     );
   }
 
+  // Fungsi untuk menampilkan dialog konfirmasi penghapusan data
   void _showDeleteDialog(ModelDatabase modeldatabase, int index) {
     showDialog(
       context: context,

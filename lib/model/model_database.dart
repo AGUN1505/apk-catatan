@@ -1,11 +1,14 @@
+// Kelas ModelCatatan digunakan untuk merepresentasikan data catatan
 class ModelCatatan {
-  int? id;
-  String? title;
-  String? content;
-  String? date;
+  int? id; // ID unik catatan
+  String? title; // Judul catatan
+  String? content; // Isi catatan
+  String? date; // Tanggal catatan
 
+  // Konstruktor untuk membuat objek ModelCatatan
   ModelCatatan({this.id, this.title, this.content, this.date});
 
+  // Metode untuk mengubah objek ModelCatatan menjadi Map
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     if (id != null) {
@@ -18,6 +21,7 @@ class ModelCatatan {
     return map;
   }
 
+  // Konstruktor named untuk membuat objek ModelCatatan dari Map
   ModelCatatan.fromMap(Map<String, dynamic> map) {
     this.id = map['id'];
     this.title = map['title'];
@@ -26,13 +30,15 @@ class ModelCatatan {
   }
 }
 
+// Kelas ModelDatabase digunakan untuk merepresentasikan data transaksi keuangan
 class ModelDatabase {
-  int? id;
-  String? tipe;
-  String? keterangan;
-  String? jml_uang;
-  String? tanggal;
+  int? id; // ID unik transaksi
+  String? tipe; // Tipe transaksi (pemasukan/pengeluaran)
+  String? keterangan; // Keterangan transaksi
+  String? jml_uang; // Jumlah uang dalam transaksi
+  String? tanggal; // Tanggal transaksi
 
+  // Konstruktor untuk membuat objek ModelDatabase
   ModelDatabase({
     this.id,
     this.tipe,
@@ -41,6 +47,7 @@ class ModelDatabase {
     this.tanggal,
   });
 
+  // Metode untuk mengubah objek ModelDatabase menjadi Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -51,6 +58,7 @@ class ModelDatabase {
     };
   }
 
+  // Konstruktor factory untuk membuat objek ModelDatabase dari Map
   factory ModelDatabase.fromMap(Map<String, dynamic> map) {
     return ModelDatabase(
       id: map['id'],

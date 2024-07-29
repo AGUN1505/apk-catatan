@@ -1,9 +1,11 @@
+// Import paket-paket yang diperlukan
 import 'package:flutter/material.dart';
 import 'package:CatatanKu/decoration/format_rupiah.dart';
 import 'package:CatatanKu/database/DatabaseHelper.dart';
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:CatatanKu/pengeluaran/page_input_pengeluaran.dart';
 
+// Mendefinisikan widget StatefulWidget untuk halaman pengeluaran
 class PagePengeluaran extends StatefulWidget {
   const PagePengeluaran({Key? key}) : super(key: key);
 
@@ -11,21 +13,27 @@ class PagePengeluaran extends StatefulWidget {
   State<PagePengeluaran> createState() => _PagePengeluaranState();
 }
 
+// Mendefinisikan state untuk PagePengeluaran
 class _PagePengeluaranState extends State<PagePengeluaran> {
-  List<ModelDatabase> listPemasukan = [];
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  int strJmlUang = 0;
-  int strCheckDatabase = 0;
+  // Inisialisasi variabel-variabel yang diperlukan
+  List<ModelDatabase> listPemasukan =
+      []; // List untuk menyimpan data pengeluaran
+  DatabaseHelper databaseHelper =
+      DatabaseHelper(); // Objek untuk mengakses database
+  int strJmlUang = 0; // Variabel untuk menyimpan jumlah total pengeluaran
+  int strCheckDatabase =
+      0; // Variabel untuk mengecek apakah database kosong atau tidak
 
   @override
   void initState() {
     super.initState();
+    // Memanggil fungsi-fungsi untuk inisialisasi data
     getDatabase();
     getJmlUang();
     getAllData();
   }
 
-  //cek database ada data atau tidak
+  // Fungsi untuk mengecek apakah database memiliki data atau tidak
   Future<void> getDatabase() async {
     var checkDB = await databaseHelper.cekDataPengeluaran();
     setState(() {
@@ -38,7 +46,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     });
   }
 
-  //cek jumlah total uang
+  // Fungsi untuk mendapatkan jumlah total pengeluaran
   Future<void> getJmlUang() async {
     var checkJmlUang = await databaseHelper.getJmlPengeluaran();
     setState(() {
@@ -50,7 +58,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     });
   }
 
-  //get data untuk menampilkan ke listview
+  // Fungsi untuk mendapatkan semua data pengeluaran dari database
   Future<void> getAllData() async {
     var listData = await databaseHelper.getDataPengeluaran();
     setState(() {
@@ -61,7 +69,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     });
   }
 
-  //untuk hapus data berdasarkan Id
+  // Fungsi untuk menghapus data pengeluaran berdasarkan ID
   Future<void> deleteData(ModelDatabase modelDatabase, int position) async {
     await databaseHelper.deleteDataPengeluaran(modelDatabase.id!);
     setState(() {
@@ -71,7 +79,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     });
   }
 
-  //untuk insert data baru
+  // Fungsi untuk membuka form penambahan data baru
   Future<void> openFormCreate() async {
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => PageInputPengeluaran()));
@@ -82,7 +90,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     }
   }
 
-  //untuk edit data
+  // Fungsi untuk membuka form edit data
   Future<void> openFormEdit(ModelDatabase modelDatabase) async {
     var result = await Navigator.push(
         context,
@@ -102,6 +110,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Widget untuk menampilkan total pengeluaran
             Card(
               margin: const EdgeInsets.all(16),
               child: Padding(
@@ -122,6 +131,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
                 ),
               ),
             ),
+            // Menampilkan pesan jika tidak ada data, atau list data jika ada
             strCheckDatabase == 0
                 ? Center(
                     child: Column(
@@ -188,6 +198,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
           ],
         ),
       ),
+      // Tombol floating untuk menambah data pengeluaran baru
       floatingActionButton: FloatingActionButton.extended(
         onPressed: openFormCreate,
         icon: Icon(Icons.add),
@@ -196,6 +207,7 @@ class _PagePengeluaranState extends State<PagePengeluaran> {
     );
   }
 
+  // Fungsi untuk menampilkan dialog konfirmasi penghapusan data
   void _showDeleteDialog(ModelDatabase modeldatabase, int index) {
     showDialog(
       context: context,

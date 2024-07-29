@@ -1,12 +1,16 @@
+// Import paket-paket yang diperlukan
 import 'package:CatatanKu/model/model_database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+// Kelas untuk mengelola operasi database
 class DatabaseHelper {
+  // Singleton instance dari DatabaseHelper
   static final DatabaseHelper _instance = DatabaseHelper._internal();
+  // Instance database
   static Database? _database;
 
-  //inisialisasi beberapa variabel yang dibutuhkan
+  // Inisialisasi beberapa variabel yang dibutuhkan
   final String tableName = 'tbl_keuangan';
   final String columnId = 'id';
   final String columnTipe = 'tipe';
@@ -14,11 +18,13 @@ class DatabaseHelper {
   final String columnJmlUang = 'jml_uang';
   final String columnTgl = 'tanggal';
 
+  // Konstruktor private untuk singleton
   DatabaseHelper._internal();
 
+  // Factory constructor untuk mendapatkan instance DatabaseHelper
   factory DatabaseHelper() => _instance;
 
-  //cek apakah ada database
+  // Getter untuk mendapatkan instance database
   Future<Database?> get checkDB async {
     if (_database != null) {
       return _database;
@@ -27,13 +33,14 @@ class DatabaseHelper {
     return _database;
   }
 
+  // Metode untuk menginisialisasi database
   Future<Database?> _initDB() async {
     String databasePath = await getDatabasesPath();
     String path = join(databasePath, 'keuangan.db');
     return await openDatabase(path, version: 2, onCreate: _onCreate);
   }
 
-  //membuat tabel dan field-fieldnya
+  // Metode untuk membuat tabel saat database pertama kali dibuat
   Future<void> _onCreate(Database db, int version) async {
     var sql = "CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY, "
         "$columnTipe TEXT,"
@@ -43,13 +50,13 @@ class DatabaseHelper {
     await db.execute(sql);
   }
 
-  //insert ke database
+  // Metode untuk menyimpan data ke database
   Future<int?> saveData(ModelDatabase modelDatabase) async {
     var dbClient = await checkDB;
     return await dbClient!.insert(tableName, modelDatabase.toMap());
   }
 
-  //read data pemasukan
+  // Metode untuk mengambil data pemasukan
   Future<List?> getDataPemasukan() async {
     var dbClient = await checkDB;
     var result = await dbClient!.rawQuery(
@@ -57,7 +64,7 @@ class DatabaseHelper {
     return result.toList();
   }
 
-  //read data pengeluaran
+  // Metode untuk mengambil data pengeluaran
   Future<List?> getDataPengeluaran() async {
     var dbClient = await checkDB;
     var result = await dbClient!.rawQuery(
@@ -65,7 +72,7 @@ class DatabaseHelper {
     return result.toList();
   }
 
-  //read data jumlah pemasukan
+  // Metode untuk menghitung jumlah pemasukan
   Future<int> getJmlPemasukan() async {
     try {
       var dbClient = await checkDB;
@@ -84,7 +91,7 @@ class DatabaseHelper {
     }
   }
 
-  //read data jumlah pengeluaran
+  // Metode untuk menghitung jumlah pengeluaran
   Future<int> getJmlPengeluaran() async {
     try {
       var dbClient = await checkDB;
@@ -103,7 +110,7 @@ class DatabaseHelper {
     }
   }
 
-  //update database pemasukan
+  // Metode untuk memperbarui data pemasukan
   Future<int?> updateDataPemasukan(ModelDatabase modelDatabase) async {
     var dbClient = await checkDB;
     return await dbClient!.update(tableName, modelDatabase.toMap(),
@@ -111,7 +118,7 @@ class DatabaseHelper {
         whereArgs: [modelDatabase.id, 'pemasukan']);
   }
 
-  //update database pengeluaran
+  // Metode untuk memperbarui data pengeluaran
   Future<int?> updateDataPengeluaran(ModelDatabase modelDatabase) async {
     var dbClient = await checkDB;
     return await dbClient!.update(tableName, modelDatabase.toMap(),
@@ -119,7 +126,7 @@ class DatabaseHelper {
         whereArgs: [modelDatabase.id, 'pengeluaran']);
   }
 
-  //cek database pemasukan
+  // Metode untuk memeriksa jumlah data pemasukan
   Future<int?> cekDataPemasukan() async {
     var dbClient = await checkDB;
     return Sqflite.firstIntValue(await dbClient!.rawQuery(
@@ -127,7 +134,7 @@ class DatabaseHelper {
         ['pemasukan']));
   }
 
-  //cek database pengeluaran
+  // Metode untuk memeriksa jumlah data pengeluaran
   Future<int?> cekDataPengeluaran() async {
     var dbClient = await checkDB;
     return Sqflite.firstIntValue(await dbClient!.rawQuery(
@@ -135,7 +142,7 @@ class DatabaseHelper {
         ['pengeluaran']));
   }
 
-  //hapus database pemasukan
+  // Metode untuk menghapus data pemasukan berdasarkan ID
   Future<int?> deletePemasukan(int id) async {
     var dbClient = await checkDB;
     return await dbClient!.delete(tableName,
@@ -143,7 +150,7 @@ class DatabaseHelper {
         whereArgs: [id, 'pemasukan']);
   }
 
-  //hapus database pengeluaran
+  // Metode untuk menghapus data pengeluaran berdasarkan ID
   Future<int?> deleteDataPengeluaran(int id) async {
     var dbClient = await checkDB;
     return await dbClient!.delete(tableName,
