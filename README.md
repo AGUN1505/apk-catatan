@@ -13,3 +13,6 @@ Aplikasi ini saya persembahkan untuk semua orang terutama untuk para sekretaris 
 1. Clone: `git clone https://github.com/AGUN1505/apk-catatan.git`
 2. Install dependecies: `flutter pub get`
 3. Run
+
+## Rencana Update Kedepannya
+penambahan fitur autosave untuk catatan 
