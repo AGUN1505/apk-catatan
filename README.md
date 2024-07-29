@@ -1,16 +1,15 @@
-# catatanku
+# CatatanKu V1.0
 
 A new Flutter project.
 
-## Getting Started
+## Tampilan
+<img src="http://rav.000.pe/wp-content/uploads/2024/07/3-135x300.jpg" style="max-width:100%;">
+<img src="http://rav.000.pe/wp-content/uploads/2024/07/4-135x300.jpg" style="max-width:100%;">
+<img src="http://rav.000.pe/wp-content/uploads/2024/07/1-135x300.jpg" style="max-width:100%;">
+<img src="http://rav.000.pe/wp-content/uploads/2024/07/2-135x300.jpg" style="max-width:100%;">
 
-This project is a starting point for a Flutter application.
+## Instalasi
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone: `git clone https://github.com/AGUN1505/apk-catatan`
+2. Install dependecies: `flutter pub get`
+3. Run
