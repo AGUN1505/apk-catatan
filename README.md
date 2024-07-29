@@ -1,6 +1,6 @@
 # CatatanKu V1.0
 
-A new Flutter project.
+Aplikasi ini saya persembahkan untuk semua orang terutama untuk para sekretaris dan juga bandahara yang satu organisasi dengan saya, yang lain boleh juga kok pakainya kalau mau
 
 ## Tampilan
 <img src="http://rav.000.pe/wp-content/uploads/2024/07/3-135x300.jpg" style="max-width:100%;">
