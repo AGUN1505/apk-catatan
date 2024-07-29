@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:catatanku/model/model_database.dart';
+import 'package:CatatanKu/model/model_database.dart';
 
 class DatabaseHelper2 {
   static final DatabaseHelper2 _instance = DatabaseHelper2._internal2();

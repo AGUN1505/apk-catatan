@@ -1,6 +1,6 @@
-import 'package:catatanku/model/model_database.dart';
-import 'package:catatanku/database/DatabaseHelper2.dart';
-import 'package:catatanku/catatan/detailcatatan.dart';
+import 'package:CatatanKu/model/model_database.dart';
+import 'package:CatatanKu/database/DatabaseHelper2.dart';
+import 'package:CatatanKu/catatan/detailcatatan.dart';
 import 'package:flutter/material.dart';
 
 class PageCatatan extends StatefulWidget {
@@ -28,32 +28,49 @@ class _PageCatatanState extends State<PageCatatan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true, // Add this line
-              physics: const NeverScrollableScrollPhysics(), // Add this line
+      body: _notes.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.note, size: 80, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'Belum ada catatan.\nYuk buat catatan baru!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
               itemCount: _notes.length,
               itemBuilder: (context, index) {
                 final note = _notes[index];
-                return ListTile(
-                  title: Text(note.title ?? ''),
-                  subtitle: Text(note.date ?? ''),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailCatatanPage(note: note),
-                      ),
-                    ).then((_) => _loadNotes());
-                  },
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: ListTile(
+                    title: Text(
+                      note.title ?? '',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      note.date ?? '',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailCatatanPage(note: note),
+                        ),
+                      ).then((_) => _loadNotes());
+                    },
+                  ),
                 );
               },
             ),
-          ],
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -63,7 +80,7 @@ class _PageCatatanState extends State<PageCatatan> {
             ),
           ).then((_) => _loadNotes());
         },
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }

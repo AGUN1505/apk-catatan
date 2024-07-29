@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:catatanku/model/model_database.dart';
-import 'package:catatanku/database/DatabaseHelper2.dart';
+import 'package:CatatanKu/model/model_database.dart';
+import 'package:CatatanKu/database/DatabaseHelper2.dart';
 
 class DetailCatatanPage extends StatefulWidget {
   final ModelCatatan? note;
@@ -64,9 +64,10 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                 icon: Icon(Icons.delete),
                 onPressed: _deleteNote,
               ),
-            ElevatedButton(
+            IconButton(
+              icon: Icon(Icons.save),
               onPressed: _saveNote,
-              child: Text('Simpan'),
+              // child: Text('Simpan'),
             )
           ],
         ),

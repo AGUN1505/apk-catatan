@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:catatanku/database/DatabaseHelper.dart';
-import 'package:catatanku/decoration/format_rupiah.dart';
-import 'package:catatanku/model/model_database.dart';
-import 'package:catatanku/pemasukan/page_input_pemasukan.dart';
+import 'package:CatatanKu/database/DatabaseHelper.dart';
+import 'package:CatatanKu/decoration/format_rupiah.dart';
+import 'package:CatatanKu/model/model_database.dart';
+import 'package:CatatanKu/pemasukan/page_input_pemasukan.dart';
 
 class PagePemasukan extends StatefulWidget {
   const PagePemasukan({Key? key}) : super(key: key);
@@ -103,34 +103,41 @@ class _PagePemasukanState extends State<PagePemasukan> {
         child: Column(
           children: [
             Card(
-              margin: const EdgeInsets.all(10),
-              clipBehavior: Clip.antiAlias,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              color: Colors.white,
-              child: ListTile(
-                title: Text('Total Pemasukan Bulan Ini',
-                    style: const TextStyle(fontSize: 14, color: Colors.black)),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(CurrencyFormat.convertToIdr(strJmlUang),
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
+              margin: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Total Pemasukan Bulan Ini',
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.grey[600])),
+                    SizedBox(height: 8),
+                    Text(
+                      CurrencyFormat.convertToIdr(strJmlUang),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
             strCheckDatabase == 0
-                ? Container(
-                    padding: EdgeInsets.only(top: 200),
-                    child: Text(
-                        'Ups, belum ada pemasukan.\nYuk catat pemasukan Kamu!',
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black)))
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.inbox, size: 80, color: Colors.grey),
+                        SizedBox(height: 16),
+                        Text(
+                          'Belum ada pemasukan.\nYuk catat pemasukan Kamu!',
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  )
                 : ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -138,122 +145,76 @@ class _PagePemasukanState extends State<PagePemasukan> {
                     itemBuilder: (context, index) {
                       ModelDatabase modeldatabase = listPemasukan[index];
                       return Card(
-                        margin: const EdgeInsets.all(10),
-                        clipBehavior: Clip.antiAlias,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        color: Colors.white,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         child: ListTile(
-                          title: Text('${modeldatabase.keterangan}',
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
+                          title: Text(
+                            '${modeldatabase.keterangan}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           subtitle: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                ),
-                                child: Text(
-                                    'Jumlah Uang: ' +
-                                        CurrencyFormat.convertToIdr(int.parse(
-                                            modeldatabase.jml_uang.toString())),
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.black)),
+                              SizedBox(height: 4),
+                              Text(
+                                CurrencyFormat.convertToIdr(int.parse(
+                                    modeldatabase.jml_uang.toString())),
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8, bottom: 8),
-                                child: Text('Tanggal: ${modeldatabase.tanggal}',
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.black)),
+                              Text('${modeldatabase.tanggal}',
+                                  style: TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.blue),
+                                onPressed: () => openFormEdit(modeldatabase),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () =>
+                                    _showDeleteDialog(modeldatabase, index),
                               ),
                             ],
                           ),
-                          trailing: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      openFormEdit(modeldatabase);
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.black,
-                                    )),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    AlertDialog hapus = AlertDialog(
-                                      title: Text('Hapus Data',
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black)),
-                                      content: Container(
-                                        height: 20,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                                'Yakin ingin menghapus data ini?',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black))
-                                          ],
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              deleteData(modeldatabase, index);
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Ya',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black))),
-                                        TextButton(
-                                          child: Text('Tidak',
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black)),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => hapus);
-                                  },
-                                )
-                              ],
-                            ),
-                          ),
                         ),
                       );
-                    }),
+                    },
+                  ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          openFormCreate();
-        },
-        icon: Icon(Icons.add, color: Colors.white),
-        label: Text(
-          'Tambah Pemasukan',
-          style: TextStyle(
-              color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-        ),
+        onPressed: openFormCreate,
+        icon: Icon(Icons.add),
+        label: Text('Tambah Pemasukan'),
+      ),
+    );
+  }
+
+  void _showDeleteDialog(ModelDatabase modeldatabase, int index) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Hapus Data'),
+        content: Text('Yakin ingin menghapus data ini?'),
+        actions: [
+          TextButton(
+            child: Text('Tidak'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: Text('Ya'),
+            onPressed: () {
+              deleteData(modeldatabase, index);
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
     );
   }

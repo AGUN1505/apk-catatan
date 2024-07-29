@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:catatanku/catatan/page_catatan.dart';
-import 'package:catatanku/pemasukan/page_pemasukan.dart';
-import 'package:catatanku/pengeluaran/page_pengeluaran.dart';
+import 'package:CatatanKu/catatan/page_catatan.dart';
+import 'package:CatatanKu/pemasukan/page_pemasukan.dart';
+import 'package:CatatanKu/pengeluaran/page_pengeluaran.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,23 +34,27 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        floatingActionButtonTheme:
-            FloatingActionButtonThemeData(backgroundColor: Colors.blue),
-        cardTheme: const CardTheme(surfaceTintColor: Colors.white),
-        dialogTheme: const DialogTheme(
-            surfaceTintColor: Colors.white, backgroundColor: Colors.white),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        cardTheme: CardTheme(
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: Text('CatatanKu',
-              style: const TextStyle(fontSize: 20, color: Colors.white)),
+          title:
+              Text('CatatanKu', style: TextStyle(fontWeight: FontWeight.bold)),
           bottom: setTabBar(),
         ),
         body: TabBarView(
@@ -67,20 +71,16 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 
   TabBar setTabBar() {
     return TabBar(
-        controller: tabController,
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.black26,
-        indicatorColor: Colors.white,
-        tabs: [
-          Tab(text: 'Catatan', icon: const Icon(Icons.book)),
-          Tab(
-            text: 'Pemasukan',
-            icon: Icon(Icons.archive_outlined),
-          ),
-          Tab(
-            text: 'Pengeluaran',
-            icon: Icon(Icons.unarchive_outlined),
-          ),
-        ]);
+      controller: tabController,
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.white70,
+      indicatorColor: Colors.white,
+      indicatorWeight: 3,
+      tabs: [
+        Tab(text: 'Catatan', icon: Icon(Icons.note)),
+        Tab(text: 'Pemasukan', icon: Icon(Icons.arrow_downward)),
+        Tab(text: 'Pengeluaran', icon: Icon(Icons.arrow_upward)),
+      ],
+    );
   }
 }
