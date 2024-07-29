@@ -10,6 +10,6 @@ A new Flutter project.
 
 ## Instalasi
 
-1. Clone: `git clone https://github.com/AGUN1505/apk-catatan`
+1. Clone: `git clone https://github.com/AGUN1505/apk-catatan.git`
 2. Install dependecies: `flutter pub get`
 3. Run
