@@ -15,6 +15,10 @@ Aplikasi ini saya persembahkan untuk semua orang terutama untuk para sekretaris 
 2. Install dependecies: `flutter pub get`
 3. Run
 
+atau
+
+flutter build apk --release
+
 ## Rencana Update Kedepannya
 
 kita tambah fitur untuk melihat selisih pada pemasukan dan pengeluaran
