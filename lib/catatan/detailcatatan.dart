@@ -18,6 +18,7 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
   final _formKey = GlobalKey<FormState>(); // Key untuk form
   String? _title; // Judul catatan
   String? _content; // Isi catatan
+  bool _isModified = false; // Tambahkan variabel untuk melacak perubahan
 
   @override
   void initState() {
@@ -29,41 +30,34 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
     }
   }
 
-  // Fungsi untuk menyimpan catatan
-  Future<void> _saveNote() async {
-    if (_formKey.currentState!.validate()) {
+  // Fungsi untuk autosave
+  Future<void> _autoSaveNote() async {
+    if (_isModified && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      // Membuat objek catatan baru
       final newNote = ModelCatatan(
         id: widget.note?.id,
         title: _title,
         content: _content,
         date: DateTime.now().toIso8601String(),
       );
-
-      // Menyimpan catatan baru atau memperbarui catatan yang ada
       if (widget.note == null) {
         await DatabaseHelper2().saveNote(newNote);
       } else {
         await DatabaseHelper2().updateNote(newNote);
       }
-
-      Navigator.pop(context); // Kembali ke halaman sebelumnya
-    }
-  }
-
-  // Fungsi untuk menghapus catatan
-  Future<void> _deleteNote() async {
-    if (widget.note != null) {
-      await DatabaseHelper2().deleteNote(widget.note!.id!);
-      Navigator.pop(context); // Kembali ke halaman sebelumnya
+      // Opsional: tambahkan log atau notifikasi bahwa autosave telah dilakukan
+      print('Catatan disimpan otomatis');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        await _autoSaveNote(); // Panggil autosave sebelum keluar halaman
+        return true; // Izinkan navigasi kembali
+      },
+      child: Scaffold(
         appBar: AppBar(
           title: Text(widget.note == null ? 'Tambah Catatan' : 'Edit Catatan'),
           actions: [
@@ -99,6 +93,10 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                         return null;
                       },
                       onSaved: (value) => _title = value,
+                      onChanged: (value) {
+                        _title = value;
+                        _isModified = true; // Tandai bahwa ada perubahan
+                      },
                     ),
                     // Input field untuk isi catatan
                     TextFormField(
@@ -112,12 +110,50 @@ class _DetailCatatanPageState extends State<DetailCatatanPage> {
                         return null;
                       },
                       onSaved: (value) => _content = value,
+                      onChanged: (value) {
+                        _content = value;
+                        _isModified = true; // Tandai bahwa ada perubahan
+                      },
                     ),
                   ],
                 ),
               ),
             ),
           ]),
-        ));
+        ),
+      ),
+    );
+  }
+
+  // Fungsi untuk menyimpan catatan
+  Future<void> _saveNote() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // Membuat objek catatan baru
+      final newNote = ModelCatatan(
+        id: widget.note?.id,
+        title: _title,
+        content: _content,
+        date: DateTime.now().toIso8601String(),
+      );
+
+      // Menyimpan catatan baru atau memperbarui catatan yang ada
+      if (widget.note == null) {
+        await DatabaseHelper2().saveNote(newNote);
+      } else {
+        await DatabaseHelper2().updateNote(newNote);
+      }
+
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
+    }
+  }
+
+  // Fungsi untuk menghapus catatan
+  Future<void> _deleteNote() async {
+    if (widget.note != null) {
+      await DatabaseHelper2().deleteNote(widget.note!.id!);
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
+    }
   }
 }
