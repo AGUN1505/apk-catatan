@@ -18,4 +18,7 @@ Aplikasi ini saya persembahkan untuk semua orang terutama untuk para sekretaris 
 ## Rencana Update Kedepannya
 
 kita tambah fitur untuk melihat selisih pada pemasukan dan pengeluaran
+
+## Fitur
+
 fitur autosave done
