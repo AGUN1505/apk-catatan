@@ -21,8 +21,10 @@ flutter build apk --release
 
 ## Rencana Update Kedepannya
 
-kita tambah fitur untuk melihat selisih pada pemasukan dan pengeluaran
+--
 
 ## Fitur
 
 fitur autosave done
+selisih done
+to do list done
