@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:CatatanKu/catatan/page_catatan.dart';
 import 'package:CatatanKu/pemasukan/page_pemasukan.dart';
 import 'package:CatatanKu/pengeluaran/page_pengeluaran.dart';
+import 'package:CatatanKu/selisih/page_selisih.dart';
+import 'package:CatatanKu/todo/todo_drawer.dart';
 
 // Fungsi utama yang menjalankan aplikasi
 void main() {
@@ -21,11 +23,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   // Controller untuk mengatur tab
   TabController? tabController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    // Inisialisasi TabController dengan 3 tab
-    tabController = new TabController(length: 3, vsync: this);
+    // Inisialisasi TabController dengan 4 tab
+    tabController = new TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -62,11 +65,21 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       debugShowCheckedModeBanner: false,
       // Halaman utama aplikasi
       home: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title:
               Text('CatatanKu', style: TextStyle(fontWeight: FontWeight.bold)),
           bottom: setTabBar(),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.list),
+              onPressed: () {
+                _scaffoldKey.currentState!.openEndDrawer();
+              },
+            ),
+          ],
         ),
+        endDrawer: TodoDrawer(),
         // Konten utama dengan TabBarView
         body: TabBarView(
           controller: tabController,
@@ -74,6 +87,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             PageCatatan(),
             PagePemasukan(),
             PagePengeluaran(),
+            PageSelisih(),
           ],
         ),
       ),
@@ -92,6 +106,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         Tab(text: 'Catatan', icon: Icon(Icons.note)),
         Tab(text: 'Pemasukan', icon: Icon(Icons.arrow_downward)),
         Tab(text: 'Pengeluaran', icon: Icon(Icons.arrow_upward)),
+        Tab(text: 'Selisih', icon: Icon(Icons.compare_arrows)),
       ],
     );
   }
