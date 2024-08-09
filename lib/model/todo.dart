@@ -1,7 +1,7 @@
 class ToDo {
   final int? id;
   final String task;
-  final bool isCompleted;
+  bool isCompleted;
 
   ToDo({
     this.id,

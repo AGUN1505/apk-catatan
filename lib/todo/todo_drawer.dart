@@ -3,13 +3,15 @@ import 'package:CatatanKu/database/database_helper.dart';
 import 'package:CatatanKu/model/todo.dart';
 
 class TodoDrawer extends StatefulWidget {
+  const TodoDrawer({Key? key}) : super(key: key);
+
   @override
   _TodoDrawerState createState() => _TodoDrawerState();
 }
 
 class _TodoDrawerState extends State<TodoDrawer> {
-  List<ToDo> _todoItems = [];
-  TextEditingController _textFieldController = TextEditingController();
+  final List<ToDo> _todoItems = [];
+  final TextEditingController _textFieldController = TextEditingController();
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
@@ -18,29 +20,33 @@ class _TodoDrawerState extends State<TodoDrawer> {
     _loadTodoItems();
   }
 
-  _loadTodoItems() async {
-    _todoItems = await _dbHelper.getToDos();
-    setState(() {});
+  Future<void> _loadTodoItems() async {
+    final loadedItems = await _dbHelper.getToDos();
+    setState(() {
+      _todoItems
+        ..clear()
+        ..addAll(loadedItems);
+    });
   }
 
-  void _addTodoItem(String task) {
+  Future<void> _addTodoItem(String task) async {
     if (task.isNotEmpty) {
       final newTodo = ToDo(task: task);
-      _dbHelper.insertToDo(newTodo);
+      await _dbHelper.insertToDo(newTodo);
       _textFieldController.clear();
-      _loadTodoItems();
+      await _loadTodoItems();
     }
   }
 
-  void _removeTodoItem(int id) {
-    _dbHelper.deleteToDo(id);
-    _loadTodoItems();
+  Future<void> _removeTodoItem(int id) async {
+    await _dbHelper.deleteToDo(id);
+    await _loadTodoItems();
   }
 
-  void _toggleTodoItem(ToDo todo) {
+  Future<void> _toggleTodoItem(ToDo todo) async {
     todo.isCompleted = !todo.isCompleted;
-    _dbHelper.updateToDo(todo);
-    _loadTodoItems();
+    await _dbHelper.updateToDo(todo);
+    await _loadTodoItems();
   }
 
   Widget _buildTodoList() {
@@ -48,23 +54,10 @@ class _TodoDrawerState extends State<TodoDrawer> {
       itemCount: _todoItems.length,
       itemBuilder: (context, index) {
         final todo = _todoItems[index];
-        return ListTile(
-          leading: Checkbox(
-            value: todo.isCompleted,
-            onChanged: (bool? value) {
-              _toggleTodoItem(todo);
-            },
-          ),
-          title: Text(
-            todo.task,
-            style: TextStyle(
-              decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
-            ),
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () => _removeTodoItem(todo.id!),
-          ),
+        return TodoListTile(
+          todo: todo,
+          onToggle: _toggleTodoItem,
+          onDelete: () => _removeTodoItem(todo.id!),
         );
       },
     );
@@ -75,41 +68,54 @@ class _TodoDrawerState extends State<TodoDrawer> {
     return Drawer(
       child: Column(
         children: <Widget>[
-          DrawerHeader(
+          Container(
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.yellow[300],
-            ),
-            child: Center(
-              child: Text(
-                'Daftar Tugas',
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
                 ),
+              ],
+            ),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Daftar Tugas',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    '${_todoItems.length} tugas',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.8),
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            padding: const EdgeInsets.all(16.0),
+            child: TodoInputField(
               controller: _textFieldController,
-              decoration: InputDecoration(
-                labelText: 'Tambah tugas baru',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    _addTodoItem(_textFieldController.text);
-                  },
-                ),
-              ),
-              onSubmitted: (value) {
-                _addTodoItem(value);
-              },
+              onSubmitted: _addTodoItem,
             ),
           ),
           Expanded(
-            child: _buildTodoList(),
+            child: _todoItems.isEmpty
+                ? const Center(child: Text('Belum ada tugas'))
+                : _buildTodoList(),
           ),
         ],
       ),
@@ -120,5 +126,72 @@ class _TodoDrawerState extends State<TodoDrawer> {
   void dispose() {
     _textFieldController.dispose();
     super.dispose();
+  }
+}
+
+class TodoListTile extends StatelessWidget {
+  final ToDo todo;
+  final VoidCallback onDelete;
+  final Function(ToDo) onToggle;
+
+  const TodoListTile({
+    Key? key,
+    required this.todo,
+    required this.onDelete,
+    required this.onToggle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListTile(
+        leading: Checkbox(
+          value: todo.isCompleted,
+          onChanged: (_) => onToggle(todo),
+          activeColor: Colors.green,
+        ),
+        title: Text(
+          todo.task,
+          style: TextStyle(
+            decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+            color: todo.isCompleted ? Colors.grey : Colors.black,
+          ),
+        ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete, color: Colors.red),
+          onPressed: onDelete,
+        ),
+      ),
+    );
+  }
+}
+
+class TodoInputField extends StatelessWidget {
+  final TextEditingController controller;
+  final Function(String) onSubmitted;
+
+  const TodoInputField({
+    Key? key,
+    required this.controller,
+    required this.onSubmitted,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: 'Tambah tugas baru',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.add, color: Colors.green),
+          onPressed: () => onSubmitted(controller.text),
+        ),
+      ),
+      onSubmitted: onSubmitted,
+    );
   }
 }
