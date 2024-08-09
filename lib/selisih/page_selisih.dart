@@ -38,19 +38,22 @@ class _PageSelisihState extends State<PageSelisih> {
         onRefresh: _loadData,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildInfoCard('Total Pemasukan', totalPemasukan, Colors.green),
-                SizedBox(height: 16),
-                _buildInfoCard(
-                    'Total Pengeluaran', totalPengeluaran, Colors.red),
-                SizedBox(height: 16),
-                _buildInfoCard('Selisih', selisih,
-                    selisih >= 0 ? Colors.blue : Colors.orange),
-              ],
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildInfoCard(
+                      'Total Pemasukan', totalPemasukan, Colors.green),
+                  SizedBox(height: 16),
+                  _buildInfoCard(
+                      'Total Pengeluaran', totalPengeluaran, Colors.red),
+                  SizedBox(height: 16),
+                  _buildInfoCard('Selisih', selisih,
+                      selisih >= 0 ? Colors.blue : Colors.orange),
+                ],
+              ),
             ),
           ),
         ),
@@ -59,23 +62,26 @@ class _PageSelisihState extends State<PageSelisih> {
   }
 
   Widget _buildInfoCard(String title, int amount, Color color) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text(
-              CurrencyFormat.convertToIdr(amount),
-              style: TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.bold, color: color),
-            ),
-          ],
+    return Container(
+      width: double.infinity,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              Text(
+                CurrencyFormat.convertToIdr(amount),
+                style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.bold, color: color),
+              ),
+            ],
+          ),
         ),
       ),
     );
