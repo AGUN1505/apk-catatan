@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:CatatanKu/database/database_helper.dart';
+import 'package:CatatanKu/model/todo.dart';
 
 class TodoDrawer extends StatefulWidget {
   @override
@@ -7,8 +8,9 @@ class TodoDrawer extends StatefulWidget {
 }
 
 class _TodoDrawerState extends State<TodoDrawer> {
-  List<Map<String, dynamic>> _todoItems = [];
+  List<ToDo> _todoItems = [];
   TextEditingController _textFieldController = TextEditingController();
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -17,94 +19,52 @@ class _TodoDrawerState extends State<TodoDrawer> {
   }
 
   _loadTodoItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _todoItems = (prefs.getStringList('todoItems') ?? []).map((item) {
-        final parts = item.split('|');
-        return {
-          'task': parts[0],
-          'isCompleted': parts[1] == 'true',
-        };
-      }).toList();
-    });
-  }
-
-  _saveTodoItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(
-        'todoItems',
-        _todoItems
-            .map((item) => '${item['task']}|${item['isCompleted']}')
-            .toList());
+    _todoItems = await _dbHelper.getToDos();
+    setState(() {});
   }
 
   void _addTodoItem(String task) {
     if (task.isNotEmpty) {
-      setState(() {
-        _todoItems.add({'task': task, 'isCompleted': false});
-      });
-      _saveTodoItems();
+      final newTodo = ToDo(task: task);
+      _dbHelper.insertToDo(newTodo);
+      _textFieldController.clear();
+      _loadTodoItems();
     }
   }
 
-  void _removeTodoItem(int index) {
-    setState(() {
-      _todoItems.removeAt(index);
-    });
-    _saveTodoItems();
+  void _removeTodoItem(int id) {
+    _dbHelper.deleteToDo(id);
+    _loadTodoItems();
   }
 
-  void _toggleTodoItem(int index) {
-    setState(() {
-      _todoItems[index]['isCompleted'] = !_todoItems[index]['isCompleted'];
-    });
-    _saveTodoItems();
-  }
-
-  void _promptRemoveTodoItem(int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Hapus "${_todoItems[index]['task']}"?'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('BATAL'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: Text('HAPUS'),
-              onPressed: () {
-                _removeTodoItem(index);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  void _toggleTodoItem(ToDo todo) {
+    todo.isCompleted = !todo.isCompleted;
+    _dbHelper.updateToDo(todo);
+    _loadTodoItems();
   }
 
   Widget _buildTodoList() {
     return ListView.builder(
       itemCount: _todoItems.length,
       itemBuilder: (context, index) {
+        final todo = _todoItems[index];
         return ListTile(
           leading: Checkbox(
-            value: _todoItems[index]['isCompleted'],
+            value: todo.isCompleted,
             onChanged: (bool? value) {
-              _toggleTodoItem(index);
+              _toggleTodoItem(todo);
             },
           ),
           title: Text(
-            _todoItems[index]['task'],
+            todo.task,
             style: TextStyle(
-              decoration: _todoItems[index]['isCompleted']
-                  ? TextDecoration.lineThrough
-                  : null,
+              decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
             ),
           ),
-          onTap: () => _promptRemoveTodoItem(index),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _removeTodoItem(todo.id!),
+          ),
         );
       },
     );
@@ -130,9 +90,6 @@ class _TodoDrawerState extends State<TodoDrawer> {
               ),
             ),
           ),
-          Expanded(
-            child: _buildTodoList(),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -143,18 +100,25 @@ class _TodoDrawerState extends State<TodoDrawer> {
                   icon: Icon(Icons.add),
                   onPressed: () {
                     _addTodoItem(_textFieldController.text);
-                    _textFieldController.clear();
                   },
                 ),
               ),
               onSubmitted: (value) {
                 _addTodoItem(value);
-                _textFieldController.clear();
               },
             ),
+          ),
+          Expanded(
+            child: _buildTodoList(),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _textFieldController.dispose();
+    super.dispose();
   }
 }
