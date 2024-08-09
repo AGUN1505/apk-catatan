@@ -1,4 +1,4 @@
-# CatatanKu V1.0.1
+# CatatanKu V2.0.0
 
 Aplikasi ini saya persembahkan untuk semua orang terutama untuk para sekretaris dan juga bandahara yang satu organisasi dengan saya, yang lain boleh juga kok pakainya kalau mau
 
