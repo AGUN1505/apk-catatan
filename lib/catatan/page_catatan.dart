@@ -96,7 +96,7 @@ class _PageCatatanState extends State<PageCatatan> {
         },
         icon: Icon(Icons.add),
         label: Text('Tambah Catatan'),
-        backgroundColor: Colors.yellow[300],
+        backgroundColor: Color.fromARGB(255, 251, 126, 255),
         foregroundColor: Colors.black87,
       ),
     );

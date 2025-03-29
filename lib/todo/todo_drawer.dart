@@ -71,7 +71,8 @@ class _TodoDrawerState extends State<TodoDrawer> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.yellow[300],
+              // color: Colors.yellow[300],
+              color: const Color.fromARGB(255, 251, 126, 255),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),

@@ -45,14 +45,19 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       // Konfigurasi tema aplikasi
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow[300]!),
+        colorScheme: ColorScheme.fromSeed(
+          // seedColor: Colors.yellow[300]!),
+          seedColor: Color.fromARGB(255, 251, 126, 255),
+        ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.yellow[300],
+          // backgroundColor: Colors.yellow[300],
+          backgroundColor: Color.fromARGB(255, 251, 126, 255),
           foregroundColor: Colors.black87,
           elevation: 0,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.yellow[300],
+          // backgroundColor: Colors.yellow[300],
+          backgroundColor: Color.fromARGB(255, 251, 126, 255),
           foregroundColor: Colors.black87,
         ),
         cardTheme: CardTheme(
@@ -67,8 +72,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       home: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title:
-              Text('CatatanKu', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text('CatWan', style: TextStyle(fontWeight: FontWeight.bold)),
           bottom: setTabBar(),
           actions: [
             IconButton(

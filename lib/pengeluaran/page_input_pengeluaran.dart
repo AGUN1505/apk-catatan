@@ -49,7 +49,8 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
         iconTheme: IconThemeData(
           color: Colors.black87,
         ),
-        backgroundColor: Colors.yellow[300],
+        // backgroundColor: Colors.yellow[300],
+        backgroundColor: Color.fromARGB(255, 251, 126, 255),
         title: Text('Form Data Pengeluaran',
             style: TextStyle(fontSize: 16, color: Colors.black87)),
       ),
@@ -66,7 +67,7 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
             ),
           ),
           SizedBox(height: 16),
@@ -83,8 +84,8 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
                 builder: (BuildContext context, Widget? child) {
                   return Theme(
                     data: Theme.of(context).copyWith(
-                      colorScheme:
-                          ColorScheme.light(primary: Colors.yellow[300]!),
+                      colorScheme: ColorScheme.light(
+                          primary: Color.fromARGB(255, 251, 126, 255)),
                       buttonTheme:
                           ButtonThemeData(textTheme: ButtonTextTheme.primary),
                     ),
@@ -102,7 +103,7 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
               suffixIcon: Icon(Icons.calendar_today),
             ),
           ),
@@ -117,7 +118,7 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
               prefixText: 'Rp ',
             ),
           ),
@@ -141,7 +142,7 @@ class _PageInputPengeluaranState extends State<PageInputPengeluaran> {
               style: TextStyle(color: Colors.black87),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.yellow[300],
+              backgroundColor: Color.fromARGB(255, 251, 126, 255),
               foregroundColor: Colors.black87,
               padding: EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(

@@ -60,7 +60,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
             ),
           ),
           SizedBox(height: 16),
@@ -77,9 +77,9 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
                 builder: (BuildContext context, Widget? child) {
                   return Theme(
                     data: ThemeData.light().copyWith(
-                      primaryColor: Colors.yellow[300],
-                      colorScheme:
-                          ColorScheme.light(primary: Colors.yellow[300]!),
+                      primaryColor: Color.fromARGB(255, 251, 126, 255),
+                      colorScheme: ColorScheme.light(
+                          primary: Color.fromARGB(255, 251, 126, 255)),
                       buttonTheme:
                           ButtonThemeData(textTheme: ButtonTextTheme.primary),
                     ),
@@ -97,7 +97,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
               suffixIcon: Icon(Icons.calendar_today),
             ),
           ),
@@ -112,7 +112,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
                 borderRadius: BorderRadius.circular(10),
               ),
               filled: true,
-              fillColor: Colors.yellow[50],
+              fillColor: Colors.pink[50],
               prefixText: 'Rp ',
             ),
           ),
@@ -136,7 +136,7 @@ class _PageInputPemasukanState extends State<PageInputPemasukan> {
               style: TextStyle(color: Colors.black87),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.yellow[300],
+              backgroundColor: Color.fromARGB(255, 251, 126, 255),
               foregroundColor: Colors.black87,
               padding: EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
